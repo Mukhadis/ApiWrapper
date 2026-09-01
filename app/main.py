@@ -1,11 +1,11 @@
+from .constants import city, coord_url, weather_url, location_params
+
 import requests
 import time
 
-city = "Dublin"
-coord_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1&language=en&format=json"
 
-def get_latitude_and_longitude(coord_url: str) -> tuple[str, str]:
-    response = requests.get(coord_url)
+def get_latitude_and_longitude() -> tuple[str, str]:
+    response = requests.get(coord_url, params=location_params)
     data = response.json()
     results = data["results"]
     relevant_info = results[0]
@@ -15,8 +15,13 @@ def get_latitude_and_longitude(coord_url: str) -> tuple[str, str]:
     return coordinates
 
 def get_weather() -> str:
-    coordinates = get_latitude_and_longitude(coord_url)
-    response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={coordinates[0]}&longitude={coordinates[1]}&hourly=temperature_2m&forecast_days=1")
+    coords = get_latitude_and_longitude()
+    weather_params = {
+        "latitude": coords[0],
+        "longitude": coords[1],
+        "hourly": "temperature_2m"
+    }
+    response = requests.get(weather_url, params=weather_params)
     data = response.json()
     hourly_weather = data["hourly"]
     current_hour = time.localtime().tm_hour
