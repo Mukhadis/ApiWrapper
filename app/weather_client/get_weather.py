@@ -3,14 +3,17 @@ from ..constants import city
 import requests
 import time
 
-def get_weather(coordinates: tuple[int, int] | str, url: str) -> tuple[int, int] | str:
+def get_weather(coordinates: tuple[float, float] | str, url: str) -> str:
 
-    # These are the parameters we are going to feed into the request as parameters
-    weather_params = {
-        "latitude": coordinates[0],
-        "longitude": coordinates[1],
-        "hourly": "temperature_2m"
-    }
+    if type(coordinates) == str:
+        return coordinates
+    else:
+        # These are the parameters we are going to feed into the request as parameters if coordiates is indeed a Tuple type
+        weather_params = {
+            "latitude": coordinates[0],
+            "longitude": coordinates[1],
+            "hourly": "temperature_2m"
+        }
 
     # Same logic as prior. If the URL does not exist handle
     try:
@@ -28,7 +31,4 @@ def get_weather(coordinates: tuple[int, int] | str, url: str) -> tuple[int, int]
         weather_that_hour = hourly_weather["temperature_2m"]
         return f"Weather is currently {weather_that_hour[current_hour]}º celsius in {city}."
     except requests.exceptions.HTTPError:
-        if response.status_code == 400:
-            return coordinates
-        else:
-            return f"ERROR: Could not reach the weather API [{response.status_code}]"
+        return f"ERROR: Could not reach the weather API [{response.status_code}]"

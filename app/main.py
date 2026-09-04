@@ -1,6 +1,6 @@
 from .weather_client.get_coordinates import get_latitude_and_longitude
 from .weather_client.get_weather import get_weather
-from .constants import coord_url, weather_url
+from .constants import coord_url, weather_url, broken_coord_url, broken_weather_url # broken URLs are only used for testing purposes
 
 
 def main():

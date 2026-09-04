@@ -3,7 +3,7 @@ from ..constants import location_params, broken_coord_url, broken_weather_url
 import requests
 
 
-def get_latitude_and_longitude(url: str) -> tuple[int, int] | str:
+def get_latitude_and_longitude(url: str) -> tuple[float, float] | str:
 
     # Error handling for the API request. If the URL is wrong throw an error
     try:
