@@ -1,7 +1,10 @@
-from .Weather.weather import Weather
+from .Weather.weather import WeatherClient
 
 def main():
-    weather = Weather()
-    print(weather.get_current_temperature("Paris"))
+    dublin = WeatherClient("Dublin")
+    cork = WeatherClient("Cork")
+
+    print(dublin.get_current_temperature())
+    print(cork.get_current_temperature())
 
 main()
