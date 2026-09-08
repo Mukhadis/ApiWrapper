@@ -1,23 +1,26 @@
 from __future__ import annotations
-from ..constants import city
+from ..constants import weather_url
 import requests
 import time
 
-def get_weather(coordinates: tuple[float, float] | str, url: str) -> str:
+def get_temp(coordinates: tuple[tuple[float, float], str] | str) -> str:
+
+    city = coordinates[1]
+    url = weather_url
 
     if type(coordinates) == str:
         return coordinates
     else:
         # These are the parameters we are going to feed into the request as parameters if coordiates is indeed a Tuple type
-        weather_params = {
-            "latitude": coordinates[0],
-            "longitude": coordinates[1],
+        temp_params = {
+            "latitude": coordinates[0][0],
+            "longitude": coordinates[0][1],
             "hourly": "temperature_2m"
         }
 
     # Same logic as prior. If the URL does not exist handle
     try:
-        response = requests.get(url, params=weather_params)
+        response = requests.get(url, params=temp_params)
     except requests.exceptions.ConnectionError:
         return f"Could not reach '{url}'"
 
@@ -26,9 +29,9 @@ def get_weather(coordinates: tuple[float, float] | str, url: str) -> str:
         # We manipulate the data here to extract only the temperature for a particular hour in the day. If there is a KeyError we
         response.raise_for_status()
         data = response.json()
-        hourly_weather = data["hourly"]
+        hourly_temp = data["hourly"]
         current_hour = time.localtime().tm_hour
-        weather_that_hour = hourly_weather["temperature_2m"]
-        return f"Weather is currently {weather_that_hour[current_hour]}º celsius in {city}."
+        temp_that_hour = hourly_temp["temperature_2m"]
+        return f"temp is currently {temp_that_hour[current_hour]}º celsius in {city}."
     except requests.exceptions.HTTPError:
-        return f"ERROR: Could not reach the weather API [{response.status_code}]"
+        return f"ERROR: Could not reach the temp API [{response.status_code}]"

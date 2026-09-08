@@ -1,11 +1,7 @@
-from .weather_client.get_coordinates import get_latitude_and_longitude
-from .weather_client.get_weather import get_weather
-from .constants import coord_url, weather_url, broken_coord_url, broken_weather_url # broken URLs are only used for testing purposes
-
+from .Weather.weather import Weather
 
 def main():
-    coordinates = get_latitude_and_longitude(coord_url)
-    weather = get_weather(coordinates, weather_url)
-    print(weather)
+    weather = Weather()
+    print(weather.get_current_temperature("Paris"))
 
 main()

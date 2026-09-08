@@ -1,9 +1,15 @@
 from __future__ import annotations
-from ..constants import location_params, broken_coord_url, broken_weather_url
+from ..constants import coord_url
 import requests
 
 
-def get_latitude_and_longitude(url: str) -> tuple[float, float] | str:
+def get_latitude_and_longitude(city: str) -> tuple[tuple[float, float], str] | str:
+
+    # Parameters for the get request
+    url = coord_url
+    location_params = {
+        "name": city,
+    }
 
     # Error handling for the API request. If the URL is wrong throw an error
     try:
@@ -24,4 +30,4 @@ def get_latitude_and_longitude(url: str) -> tuple[float, float] | str:
     latitude = relevant_info["latitude"]
     longitude = relevant_info["longitude"]
     coordinates = (latitude, longitude)
-    return coordinates
+    return coordinates, location_params["name"]
