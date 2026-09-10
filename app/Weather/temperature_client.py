@@ -3,7 +3,7 @@ from .constants import weather_url
 import requests
 import time
 
-def get_temp(coordinates: tuple[tuple[float, float], str] | str) -> str:
+def get_temp(coordinates: tuple[tuple[float, float], str] | str) -> str | float:
 
     city = coordinates[1]
     url = weather_url
@@ -32,6 +32,6 @@ def get_temp(coordinates: tuple[tuple[float, float], str] | str) -> str:
         hourly_temp = data["hourly"]
         current_hour = time.localtime().tm_hour
         temp_that_hour = hourly_temp["temperature_2m"]
-        return f"temp is currently {temp_that_hour[current_hour]}º celsius in {city}."
+        return temp_that_hour[current_hour]
     except requests.exceptions.HTTPError:
         return f"ERROR: Could not reach the temp API [{response.status_code}]"
