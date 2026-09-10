@@ -3,13 +3,11 @@ from .coordinates_client import get_latitude_and_longitude
 from .temperature_client import get_temp
 
 class WeatherClient:
-    def __init__(self, city: str) -> None:
-        self.city = city
 
-    def get_current_temperature(self) -> str:
+    def get_current_temperature(self, city: str) -> str:
         try:
-            coord = get_latitude_and_longitude(self.city)
+            coord = get_latitude_and_longitude(city)
             temp = get_temp(coord)
             return temp
         except KeyError:
-            return f"'{self.city}' is an invalid input"
+            return f"'{city}' is an invalid input"
