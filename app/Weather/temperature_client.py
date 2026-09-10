@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ..constants import weather_url
+from .constants import weather_url
 import requests
 import time
 
